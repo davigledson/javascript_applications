@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>JavaScript insertBefore()</title>
+</head>
+
+<body>
+    <ul id="menu">
+        <li>Services</li>
+        <li>About</li>
+        <li>Contact</li>
+    </ul>
+    <script>
+        let menu = document.getElementById('menu');
+        // cria um novo nó li
+        let li = document.createElement('li');
+        li.textContent = 'Home';
+
+        // insere um novo nó antes do primeiro item da lista
+        menu.insertBefore(li, menu.firstElementChild);
+    </script>
+</body>
+
+</html>
+<script>
+    // remover o primeiro filho
+let antigoPrimeiroFilho = someNode.removeChild(someNode.firstChild);
+// remover o último filho
+let antigoUltimoFilho = someNode.removeChild(someNode.lastChild);
+</script>
