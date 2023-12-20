@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Weather app</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/weather-icons.min.css">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+<header class="header">
+  <div class="row">
+    <div class="header__logo">
+     <h2><a href="#">Weatherapp</h2>
+    </div>
+    <p class="header__date">
+    </p>
+    <div class="header__search">
+     <a title="geolocate" href="#" class="header__geolocate" ><svg class="icon icon-target"><use xlink:href="#icon-target"></use></svg></a>
+     <form class="header__form">
+     <input type="search" placeholder="Type city name" class="header__search">
+     <button class="btn btn-primary" role="search"><svg class="icon icon-search"><use xlink:href="#icon-search"></use></svg></button>
+     </div>
+    </div>
+  </div>
+</header>
+<main class="weather">
+   <h1 class="weather__message">Insira o nome da cidade ou clique em  
+     <a title="geolocate" href="#" class="header__geolocate"><svg  class="icon icon-target"><use xlink:href="#icon-target"></use></svg></a> para usar a sua localização.
+  </h1>
+</main>
+
+<section class="forecast">
+ <div class="row">
+ </div>
+</section>
+<svg aria-hidden="true" style="position: absolute; width: 0; height: 0; overflow: hidden;" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<defs>
+<symbol id="icon-search" viewBox="0 0 32 32">
+<title>search</title>
+<path d="M31.008 27.231l-7.58-6.447c-0.784-0.705-1.622-1.029-2.299-0.998 1.789-2.096 2.87-4.815 2.87-7.787 0-6.627-5.373-12-12-12s-12 5.373-12 12 5.373 12 12 12c2.972 0 5.691-1.081 7.787-2.87-0.031 0.677 0.293 1.515 0.998 2.299l6.447 7.58c1.104 1.226 2.907 1.33 4.007 0.23s0.997-2.903-0.23-4.007zM12 20c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8z"></path>
+</symbol>
+<symbol id="icon-target" viewBox="0 0 32 32">
+<title>target</title>
+<path d="M32 14h-3.154c-0.864-5.57-5.276-9.982-10.846-10.846v-3.154h-4v3.154c-5.57 0.864-9.982 5.276-10.846 10.846h-3.154v4h3.154c0.864 5.57 5.276 9.982 10.846 10.846v3.154h4v-3.154c5.57-0.864 9.982-5.276 10.846-10.846h3.154v-4zM24.776 14h-3.118c-0.603-1.705-1.953-3.056-3.658-3.658v-3.118c3.36 0.765 6.010 3.416 6.776 6.776zM16 18c-1.105 0-2-0.895-2-2s0.895-2 2-2c1.105 0 2 0.895 2 2s-0.895 2-2 2zM14 7.224v3.118c-1.705 0.603-3.056 1.953-3.658 3.658h-3.118c0.765-3.36 3.416-6.010 6.776-6.776zM7.224 18h3.118c0.603 1.705 1.953 3.056 3.658 3.658v3.118c-3.36-0.765-6.010-3.416-6.776-6.776zM18 24.776v-3.118c1.705-0.603 3.056-1.953 3.658-3.658h3.118c-0.765 3.36-3.416 6.010-6.776 6.776z"></path>
+</symbol>
+</defs>
+</svg>
+<script src="script.js"></script>
+<script>
+  const weather = document.querySelector('.weather');
+const searchBtn = document.querySelector('button[role="search"]');
+const cityField = document.querySelector('input[type="search"]');
+const forecastRow = document.querySelector('.forecast > .row');
+const dateElement = document.querySelector('.header__date');
+const geolocateIcons = document.querySelectorAll('.header__geolocate');
+
+const icons = {
+  '01d': 'wi-day-sunny',
+  '02d': 'wi-day-cloudy',
+  '03d': 'wi-cloud',
+  '04d': 'wi-cloudy',
+  '09d': 'wi-showers',
+  '10d': 'wi-rain',
+  '11d': 'wi-thunderstorm',
+  '13d': 'wi-snow',
+  '50d': 'wi-fog',
+  '01n': 'wi-night-clear',
+  '02n': 'wi-night-alt-cloudy',
+  '03n': 'wi-cloud',
+  '04n': 'wi-night-cloudy',
+  '09n': 'wi-night-showers',
+  '10n': 'wi-night-rain',
+  '11n': 'wi-night-thunderstorm',
+  '13n': 'wi-night-alt-snow',
+  '50n': 'wi-night-fog',
+};
+function printTodayDate() {
+  const today = new Date();
+  const options = {
+    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+  };
+  dateElement.insertAdjacentText('afterbegin', today.toLocaleString('pt-br', options));
+}
+
+function getWeekDay(date) {
+  const options = { weekday: 'long' };
+  return date.toLocaleString('pt-br', options);
+}
+
+function removeChildren(parent) {
+  while (parent.firstChild) {
+    parent.removeChild(parent.firstChild);
+  }
+}
+
+
+function renderForecast(forecast) {
+  removeChildren(forecastRow);
+  forecast.forEach((weatherData) => {
+    const markup = `<div class="forecast__day">
+     <h3 class="forecast__date">${getWeekDay(new Date(weatherData.dt * 1000))}</h3>
+     <i class='wi ${icons[weatherData.weather[0].icon]} forecast__icon'></i>
+     <p class="forecast__temp">${Math.floor(weatherData.main.temp)}°C</p>
+     <p class="forecast__desc">${weatherData.weather[0].main}</p>
+   </div>`;
+    forecastRow.insertAdjacentHTML('beforeend', markup);
+  });
+}
+
+function getForecast(url) {
+  fetch(url)
+    .then((response) => response.json())
+    .then((data) => {
+      const forecastData = data.list.filter((obj) => obj.dt_txt.endsWith('06:00:00'));
+      renderForecast(forecastData);
+    });
+}
+function getCityWeather(url) {
+  fetch(url)
+    .then((response) => response.json())
+    .then((data) => {
+      const markup = `<h1 class="location">${data.name}, ${data.sys.country}</h1>
+ <div class="weather__summary">
+    <p><i class="wi ${icons[data.weather[0].icon]} weather-icon"></i> <span class="weather__celsius-value">${Math.floor(data.main.temp)}°C</span></p>
+    <p>${data.weather[0].main}</p>
+    <ul class="weather__miscellaneous">
+    <li><i class="wi wi-humidity"></i> Humidity  <span>${data.main.humidity}%</span></li>
+    <li><i class="wi wi-small-craft-advisory"></i> Wind Speed <span>${data.wind.speed} m/s</span></li>
+    </ul>
+ </div>
+ `;
+      removeChildren(weather);
+      weather.insertAdjacentHTML('beforeend', markup);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+function getWeatherByCoordinates(latitude, longitude) {
+  getCityWeather(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&APPID=84c039da9465ec28411dab57bd330381
+&units=metric`);
+}
+function getForecastByCoordinates(latitude, longitude) {
+  getForecast(`https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&APPID=84c039da9465ec28411dab57bd330381
+&units=metric`);
+}
+function getWeatherByCity(city) {
+  getCityWeather(`https://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=84c039da9465ec28411dab57bd330381
+&units=metric`);
+}
+function getForecastByCity(city) {
+  getForecast(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&APPID=84c039da9465ec28411dab57bd330381
+&units=metric`);
+}
+
+function geosuccess(position) {
+  const { latitude, longitude } = position.coords;
+  getWeatherByCoordinates(latitude, longitude);
+  getForecastByCoordinates(latitude, longitude);
+}
+
+printTodayDate();
+searchBtn.addEventListener('click', (e) => {
+  e.preventDefault();
+  getWeatherByCity(cityField.value);
+  getForecastByCity(cityField.value);
+});
+
+
+geolocateIcons.forEach((icon) => {
+  icon.addEventListener('click', (e) => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(geosuccess);
+    } else {
+      alert('Seu browser não suporta geolocalização');
+    }
+  });
+});
+</script>
+</body>
+</html>
