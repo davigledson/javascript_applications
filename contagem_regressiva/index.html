@@ -130,7 +130,7 @@ function timer(seconds) {
     // check if we should stop it!
     if(secondsLeft < 0) {
       clearInterval(countdown);
-      return;
+      return confetes();
     }
     // display it
     displayTimeLeft(secondsLeft);
@@ -158,7 +158,7 @@ function startTimer() {
   timer(seconds);
 }
 
-buttons.forEach(button => button.addEventListener('click', startTimer));
+ buttons.forEach(button => button.addEventListener('click', startTimer));
 document.customForm.addEventListener('submit', function(e) {
   e.preventDefault();
   const mins = this.minutes.value;
@@ -166,14 +166,18 @@ document.customForm.addEventListener('submit', function(e) {
   timer(mins * 60);
   this.reset();
 });
-  </script>
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
-<script>
+
+function confetes(){
     confetti({
   particleCount: 100,
   spread: 70,
   origin: { y: 0.6 }
 });
+}
+  </script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+<script>
+ 
 </script>
 </body>
 </html>
