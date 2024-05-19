@@ -1,0 +1,42 @@
+{
+    "conformidades": {
+      "doencas": [
+        {
+          "id": 1,
+          "tipo": "Virose"
+        },
+        {
+          "id": 2,
+          "tipo": "Diabete"
+        },
+        {
+          "id": 3,
+          "tipo": "Python"
+        },
+        {
+          "id": 4,
+          "tipo": "Dor de cabeça"
+        }
+      ],
+      "alergias": [
+        {
+          "id": 1,
+          "tipo": "A Banana"
+        },
+        {
+          "id": 2,
+          "tipo": "a remedios"
+        },
+        {
+          "id": 3,
+          "tipo": "A agua"
+        },
+        {
+          "id": 4,
+          "tipo": "Veggie burger"
+        }
+      ]
+     
+    }
+  
+  }

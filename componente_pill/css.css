@@ -1,0 +1,14 @@
+body{
+    background-color: rgb(245, 232, 232);
+}
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+}
+
+main input {
+    width: 50vw !important;
+}
