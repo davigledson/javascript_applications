@@ -1,5 +1,5 @@
 body{
-    background-color: rgb(245, 232, 232);
+
 }
 main {
     display: flex;
@@ -11,4 +11,18 @@ main {
 
 main input {
     width: 50vw !important;
+}
+.pill{
+    margin: 1rem;
+}
+#parte_fixar {
+    display:  flex;
+    align-items: baseline;
+    width: 800px;
+    flex-wrap: wrap;
+    word-wrap: break-word;
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
+   
+     height: auto;
 }

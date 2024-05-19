@@ -1,7 +1,7 @@
 var busca= document.getElementById("busca");
 var resultadosLista = document.getElementById("resultado");
 var conformidades = document.getElementById("conformidades");
-
+var parte_fixar = document.getElementById("parte_fixar");
 
 //resultado.innerHTML += busca.value;
 //console.log(busca.value);
@@ -12,9 +12,8 @@ busca.addEventListener("input", function() {
 
     getConformidades().then(data => {
         var resultados = pesquisarEmTempoReal(data.doencas, termoPesquisa);
-        console.log(resultados);
+        //console.log(resultados);
         exibirResultados(resultados);
-
         
     })
 })
@@ -38,17 +37,6 @@ function getConformidades(){
 
 }
 
-function pesquisarNoArray(data) {
-    data.doencas.forEach(doenca => {
-    
-        console.log("ID:", doenca.id);
-        console.log("Tipo:", doenca.tipo);
-    });
-
-}
-
-//getConformidades().then(data => pesquisarNoArray(data));
-
 
 function pesquisarEmTempoReal(array, palavraParcial) {
     let resultados = array.filter(elemento =>
@@ -62,8 +50,30 @@ function exibirResultados(resultados) {
     resultadosLista.innerHTML = '';
     
     resultados.forEach(resultado => {
-        var itemLista = document.createElement('li');
-        itemLista.textContent = resultado.tipo;
+        var itemLista = document.createElement('span');
+        itemLista.textContent = resultado.tipo + ' ';
+        itemLista.classList = `btn btn-info pill class-${resultado.tipo}`
         resultadosLista.appendChild(itemLista);
     });
 }
+
+
+    resultadosLista.addEventListener('click', event =>{
+        if(event.target.tagName === 'SPAN'){
+            const texto = event.target.innerText; 
+           
+           // console.log(`Você clicou no: ${texto}`);
+            var span = document.createElement('span')
+            span.textContent = texto;
+            span.classList = `btn btn-primary me-2 mt-2 class-${resultado.tipo}`
+            parte_fixar.appendChild(span);
+        }
+    })
+
+
+
+
+   
+   
+
+    
