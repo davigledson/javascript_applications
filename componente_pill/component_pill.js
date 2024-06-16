@@ -16,8 +16,9 @@ this.inicia = () => {
     this.busca.addEventListener("input", () => {
     
     var termoPesquisa = this.busca.value.toLowerCase();
+    var fonteDeDados = "http://localhost:3000/conformidades";
     
-    this.getConformidades().then(data => {
+    this.getDados(fonteDeDados).then(data => {
         const resultados = this.pesquisarEmTempoReal(data.doencas, termoPesquisa);
         //console.log(resultados);
         
@@ -42,8 +43,8 @@ this.resultadosLista.addEventListener('click', event =>{
 
 
 
-this.getConformidades = () => {
-   return fetch("http://localhost:3000/conformidades")
+this.getDados = (link) => {
+   return fetch(link)
 .then(resposta => {
     if (resposta.status != 200){throw new Error("ERROR 404 MEU")} 
     
@@ -90,8 +91,6 @@ this.exibirResultados = (resultados) => {
    
 
 }
-
-
 
 
 }
