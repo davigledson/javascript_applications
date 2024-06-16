@@ -18,11 +18,24 @@ this.inicia = () => {
     var termoPesquisa = this.busca.value.toLowerCase();
     
     this.getConformidades().then(data => {
-        var resultados = this.pesquisarEmTempoReal(data.doencas, termoPesquisa);
+        const resultados = this.pesquisarEmTempoReal(data.doencas, termoPesquisa);
         //console.log(resultados);
+        
         this.exibirResultados(resultados);
         
-    })
+    });
+});
+
+this.resultadosLista.addEventListener('click', event =>{
+    if(event.target.tagName === 'SPAN'){
+        const texto = event.target.innerText; 
+       
+       // console.log(`Você clicou no: ${texto}`);
+        var span = document.createElement('span');
+        span.textContent = texto;
+        span.classList = `btn btn-primary me-2 mt-2 class-${resultado.tipo}`;
+        this.parte_fixar.appendChild(span);
+    }
 })
 }
 
@@ -49,10 +62,17 @@ this.getConformidades = () => {
 
 
 this.pesquisarEmTempoReal = (array, palavraParcial) => {
-    let resultados = array.filter(elemento =>
+
+    if (palavraParcial != ''){
+        let resultados = array.filter(elemento =>
         typeof elemento.tipo === 'string' && elemento.tipo.toLowerCase().startsWith(palavraParcial)
     );
+   // console.log(resultados);
     return resultados;
+
+    //se nao tiver nenhuma letra, retorna uma array vazio
+    } else return [];
+    
 }
 
 this.exibirResultados = (resultados) => {
@@ -67,17 +87,7 @@ this.exibirResultados = (resultados) => {
     });
 
 
-    this.resultadosLista.addEventListener('click', event =>{
-        if(event.target.tagName === 'SPAN'){
-            const texto = event.target.innerText; 
-           
-           // console.log(`Você clicou no: ${texto}`);
-            var span = document.createElement('span')
-            span.textContent = texto;
-            span.classList = `btn btn-primary me-2 mt-2 class-${resultado.tipo}`
-            this.parte_fixar.appendChild(span);
-        }
-    })
+   
 
 }
 
